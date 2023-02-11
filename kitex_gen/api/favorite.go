@@ -515,8 +515,7 @@ func (p *DouyinFavoriteActionResponse) Field2DeepEqual(src string) bool {
 }
 
 type DouyinFavoriteListRequest struct {
-	UserId int64  `thrift:"user_id,1" frugal:"1,default,i64" json:"user_id"`
-	Token  string `thrift:"token,2" frugal:"2,default,string" json:"token"`
+	UserId int64 `thrift:"user_id,1" frugal:"1,default,i64" json:"user_id"`
 }
 
 func NewDouyinFavoriteListRequest() *DouyinFavoriteListRequest {
@@ -530,20 +529,12 @@ func (p *DouyinFavoriteListRequest) InitDefault() {
 func (p *DouyinFavoriteListRequest) GetUserId() (v int64) {
 	return p.UserId
 }
-
-func (p *DouyinFavoriteListRequest) GetToken() (v string) {
-	return p.Token
-}
 func (p *DouyinFavoriteListRequest) SetUserId(val int64) {
 	p.UserId = val
-}
-func (p *DouyinFavoriteListRequest) SetToken(val string) {
-	p.Token = val
 }
 
 var fieldIDToName_DouyinFavoriteListRequest = map[int16]string{
 	1: "user_id",
-	2: "token",
 }
 
 func (p *DouyinFavoriteListRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -568,16 +559,6 @@ func (p *DouyinFavoriteListRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		case 2:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -624,15 +605,6 @@ func (p *DouyinFavoriteListRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DouyinFavoriteListRequest) ReadField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.Token = v
-	}
-	return nil
-}
-
 func (p *DouyinFavoriteListRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("douyin_favorite_list_request"); err != nil {
@@ -641,10 +613,6 @@ func (p *DouyinFavoriteListRequest) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 
@@ -683,23 +651,6 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DouyinFavoriteListRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("token", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Token); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
 func (p *DouyinFavoriteListRequest) String() string {
 	if p == nil {
 		return "<nil>"
@@ -716,22 +667,12 @@ func (p *DouyinFavoriteListRequest) DeepEqual(ano *DouyinFavoriteListRequest) bo
 	if !p.Field1DeepEqual(ano.UserId) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Token) {
-		return false
-	}
 	return true
 }
 
 func (p *DouyinFavoriteListRequest) Field1DeepEqual(src int64) bool {
 
 	if p.UserId != src {
-		return false
-	}
-	return true
-}
-func (p *DouyinFavoriteListRequest) Field2DeepEqual(src string) bool {
-
-	if strings.Compare(p.Token, src) != 0 {
 		return false
 	}
 	return true
@@ -2080,7 +2021,7 @@ func (p *User) Field5DeepEqual(src bool) bool {
 type Favorite interface {
 	Action(ctx context.Context, req *DouyinFavoriteActionRequest) (r *DouyinFavoriteActionResponse, err error)
 
-	List(ctx context.Context, req *DouyinFavoriteListResponse) (r *DouyinFavoriteListRequest, err error)
+	List(ctx context.Context, req *DouyinFavoriteListRequest) (r *DouyinFavoriteListResponse, err error)
 }
 
 type FavoriteClient struct {
@@ -2118,7 +2059,7 @@ func (p *FavoriteClient) Action(ctx context.Context, req *DouyinFavoriteActionRe
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FavoriteClient) List(ctx context.Context, req *DouyinFavoriteListResponse) (r *DouyinFavoriteListRequest, err error) {
+func (p *FavoriteClient) List(ctx context.Context, req *DouyinFavoriteListRequest) (r *DouyinFavoriteListResponse, err error) {
 	var _args FavoriteListArgs
 	_args.Req = req
 	var _result FavoriteListResult
@@ -2237,7 +2178,7 @@ func (p *favoriteProcessorList) Process(ctx context.Context, seqId int32, iprot,
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FavoriteListResult{}
-	var retval *DouyinFavoriteListRequest
+	var retval *DouyinFavoriteListResponse
 	if retval, err2 = p.handler.List(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing List: "+err2.Error())
 		oprot.WriteMessageBegin("List", thrift.EXCEPTION, seqId)
@@ -2613,7 +2554,7 @@ func (p *FavoriteActionResult) Field0DeepEqual(src *DouyinFavoriteActionResponse
 }
 
 type FavoriteListArgs struct {
-	Req *DouyinFavoriteListResponse `thrift:"req,2" frugal:"2,default,DouyinFavoriteListResponse" json:"req"`
+	Req *DouyinFavoriteListRequest `thrift:"req,2" frugal:"2,default,DouyinFavoriteListRequest" json:"req"`
 }
 
 func NewFavoriteListArgs() *FavoriteListArgs {
@@ -2624,15 +2565,15 @@ func (p *FavoriteListArgs) InitDefault() {
 	*p = FavoriteListArgs{}
 }
 
-var FavoriteListArgs_Req_DEFAULT *DouyinFavoriteListResponse
+var FavoriteListArgs_Req_DEFAULT *DouyinFavoriteListRequest
 
-func (p *FavoriteListArgs) GetReq() (v *DouyinFavoriteListResponse) {
+func (p *FavoriteListArgs) GetReq() (v *DouyinFavoriteListRequest) {
 	if !p.IsSetReq() {
 		return FavoriteListArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *FavoriteListArgs) SetReq(val *DouyinFavoriteListResponse) {
+func (p *FavoriteListArgs) SetReq(val *DouyinFavoriteListRequest) {
 	p.Req = val
 }
 
@@ -2704,7 +2645,7 @@ ReadStructEndError:
 }
 
 func (p *FavoriteListArgs) ReadField2(iprot thrift.TProtocol) error {
-	p.Req = NewDouyinFavoriteListResponse()
+	p.Req = NewDouyinFavoriteListRequest()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
@@ -2776,7 +2717,7 @@ func (p *FavoriteListArgs) DeepEqual(ano *FavoriteListArgs) bool {
 	return true
 }
 
-func (p *FavoriteListArgs) Field2DeepEqual(src *DouyinFavoriteListResponse) bool {
+func (p *FavoriteListArgs) Field2DeepEqual(src *DouyinFavoriteListRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -2785,7 +2726,7 @@ func (p *FavoriteListArgs) Field2DeepEqual(src *DouyinFavoriteListResponse) bool
 }
 
 type FavoriteListResult struct {
-	Success *DouyinFavoriteListRequest `thrift:"success,0,optional" frugal:"0,optional,DouyinFavoriteListRequest" json:"success,omitempty"`
+	Success *DouyinFavoriteListResponse `thrift:"success,0,optional" frugal:"0,optional,DouyinFavoriteListResponse" json:"success,omitempty"`
 }
 
 func NewFavoriteListResult() *FavoriteListResult {
@@ -2796,16 +2737,16 @@ func (p *FavoriteListResult) InitDefault() {
 	*p = FavoriteListResult{}
 }
 
-var FavoriteListResult_Success_DEFAULT *DouyinFavoriteListRequest
+var FavoriteListResult_Success_DEFAULT *DouyinFavoriteListResponse
 
-func (p *FavoriteListResult) GetSuccess() (v *DouyinFavoriteListRequest) {
+func (p *FavoriteListResult) GetSuccess() (v *DouyinFavoriteListResponse) {
 	if !p.IsSetSuccess() {
 		return FavoriteListResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *FavoriteListResult) SetSuccess(x interface{}) {
-	p.Success = x.(*DouyinFavoriteListRequest)
+	p.Success = x.(*DouyinFavoriteListResponse)
 }
 
 var fieldIDToName_FavoriteListResult = map[int16]string{
@@ -2876,7 +2817,7 @@ ReadStructEndError:
 }
 
 func (p *FavoriteListResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewDouyinFavoriteListRequest()
+	p.Success = NewDouyinFavoriteListResponse()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}
@@ -2950,7 +2891,7 @@ func (p *FavoriteListResult) DeepEqual(ano *FavoriteListResult) bool {
 	return true
 }
 
-func (p *FavoriteListResult) Field0DeepEqual(src *DouyinFavoriteListRequest) bool {
+func (p *FavoriteListResult) Field0DeepEqual(src *DouyinFavoriteListResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

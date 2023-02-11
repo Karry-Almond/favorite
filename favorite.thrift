@@ -47,5 +47,5 @@ struct User {
 
 service Favorite {
     douyin_favorite_action_response Action(1: douyin_favorite_action_request req)
-    douyin_favorite_list_request List(2: douyin_favorite_list_response req)
+    douyin_favorite_list_response List(2: douyin_favorite_list_request req)
 }

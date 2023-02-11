@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/apache/thrift v0.17.0
 	github.com/cloudwego/kitex v0.4.4
-	github.com/karry-almond/packages/favoriteDB v0.0.0-20230211065853-5e0b77e49fe7
+	github.com/karry-almond/packages/favoriteDB v0.0.0-20230211122414-a74e5e689ad7
 
 )
 

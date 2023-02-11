@@ -13,8 +13,8 @@ import (
 
 func main() {
 	c, _ := favorite.NewClient("Favorite", client.WithHostPorts("0.0.0.0:8888"))
-	req := &api.DouyinFavoriteActionRequest{UserId: 1, VideoId: 1, ActionType: 3}
-	resp, err := c.Action(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+	req := &api.DouyinFavoriteListRequest{UserId: 1}
+	resp, err := c.List(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 	if err != nil {
 		log.Println("ERROR")
 		log.Println(err)

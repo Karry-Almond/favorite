@@ -92,7 +92,7 @@ func (p *kClient) Action(ctx context.Context, req *api.DouyinFavoriteActionReque
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) List(ctx context.Context, req *api.DouyinFavoriteListResponse) (r *api.DouyinFavoriteListRequest, err error) {
+func (p *kClient) List(ctx context.Context, req *api.DouyinFavoriteListRequest) (r *api.DouyinFavoriteListResponse, err error) {
 	var _args api.FavoriteListArgs
 	_args.Req = req
 	var _result api.FavoriteListResult

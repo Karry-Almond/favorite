@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"log"
+
 	// "errors"
 	api "favorite/kitex_gen/api"
 
 	"github.com/karry-almond/packages/favoriteDB"
+	// "github.com/karry-almond/packages/videoDB"
 	// "log"
 	// "golang.org/x/tools/go/analysis/passes/nilfunc"
 )
@@ -44,7 +47,12 @@ func (s *FavoriteImpl) Action(ctx context.Context, req *api.DouyinFavoriteAction
 }
 
 // List implements the FavoriteImpl interface.
-func (s *FavoriteImpl) List(ctx context.Context, req *api.DouyinFavoriteListResponse) (resp *api.DouyinFavoriteListRequest, err error) {
-	// TODO: Your code here...
-	return
+func (s *FavoriteImpl) List(ctx context.Context, req *api.DouyinFavoriteListRequest) (resp *api.DouyinFavoriteListResponse, err error) {
+	status, videoList, err := favoriteDB.GetFavoriteList(req.UserId)
+	log.Println(videoList)
+	return &api.DouyinFavoriteListResponse{
+		StatusCode: status,
+		//TODO:cannot use videoList (variable of type []model.Video) as type []*api.Video in struct literal
+		//要统一api的struct和model的struct
+		VideoList:  videoList}, nil
 }
